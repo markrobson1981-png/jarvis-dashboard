@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#061426">
+<title>JARVIS — Personal Assistant</title>
+<style>
+:root{color-scheme:dark;--cyan:#64eaff;--muted:#8eabc7}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(ellipse at 50% 30%,#12365a,#071426 55%,#030914);color:#eaf8ff;font:16px system-ui,sans-serif;min-height:100vh}
+main{max-width:560px;margin:auto;padding:24px 18px 40px}
+header{display:flex;justify-content:space-between;align-items:center}
+.eyebrow{font-size:10px;letter-spacing:.25em;color:var(--cyan)}
+h1{font-size:24px;letter-spacing:.18em;margin:5px 0}
+.small{font-size:11px;color:var(--muted)}
+.hero{text-align:center;padding:32px 0 20px}
+.reactor{width:210px;height:210px;margin:22px auto;position:relative;border:1px dashed #46b9e8;border-radius:50%;display:grid;place-items:center;box-shadow:0 0 24px #168ac455,inset 0 0 24px #168ac422}
+.reactor:before,.reactor:after{content:"";position:absolute;border:1px solid #398dbb;border-radius:50%}
+.reactor:before{inset:15px}.reactor:after{inset:32px;border-style:dotted}
+.core{width:105px;height:105px;border-radius:50%;background:radial-gradient(circle,#d5fbff,#42cfff 20%,#0877b7 48%,#082b52 72%,transparent 74%);box-shadow:0 0 35px #20baffaa;display:grid;place-items:center;font-size:32px}
+.time{font-size:36px;font-weight:300;margin-top:7px}
+.panel{background:#0b1c30dd;border:1px solid #235074;border-radius:14px;padding:15px;margin-top:12px}
+button,.launch{display:block;width:100%;border:1px solid #28628a;border-radius:11px;padding:14px 10px;background:#102e49;color:#d9f5ff;font:inherit;text-align:center;text-decoration:none;margin-top:9px}
+.launch{background:linear-gradient(100deg,#68eaff,#168ecb);color:#041525;font-weight:750;letter-spacing:.08em}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.status{font-size:13px;color:var(--cyan);margin-top:7px}
+footer{text-align:center;color:var(--muted);font-size:10px;letter-spacing:.15em;margin-top:25px}
+</style>
+</head>
+<body>
+<main>
+<header><div><div class="eyebrow">PERSONAL AI SYSTEMS</div><h1>J.A.R.V.I.S.</h1></div><div class="small">PERSONAL EDITION<br>v1.0</div></header>
+<section class="hero">
+<div class="eyebrow">PERSONAL AI ASSISTANT</div>
+<div class="reactor"><div class="core">J</div></div>
+<div class="eyebrow">GOOD <span id="greeting">EVENING</span></div>
+<div class="time" id="clock">--:--:--</div>
+<div class="small" id="date"></div>
+<div class="status">● INTERFACE READY</div>
+</section>
+<section class="panel">
+<div class="eyebrow">VOICE CONNECTION</div>
+<a class="launch" href="shortcuts://run-shortcut?name=JARVIS">◉ &nbsp; ACTIVATE JARVIS VOICE</a>
+<div class="small" style="text-align:center;margin-top:9px">Launches your iPhone Shortcut named JARVIS</div>
+</section>
+<section class="grid">
+<div class="panel"><div class="eyebrow">VOICE SYSTEM</div><div class="status">● Shortcut ready</div></div>
+<div class="panel"><div class="eyebrow">AI CORE</div><div class="status">● ChatGPT</div></div>
+<div class="panel"><div class="eyebrow">MEMORY</div><div class="small">ChatGPT personalisation</div></div>
+<div class="panel"><div class="eyebrow">AUTOMATION</div><div class="small">Further setup required</div></div>
+</section>
+<section class="panel">
+<div class="eyebrow">COMMAND CENTRE</div>
+<div class="grid">
+<button data-prompt="JARVIS, prepare my daily briefing. Help me review today's priorities and anything important I should know.">Daily briefing</button>
+<button data-prompt="JARVIS, help me research this subject thoroughly and distinguish facts from assumptions.">Research</button>
+<button data-prompt="JARVIS, help me organise my day and prioritise my tasks.">Planning</button>
+<button data-prompt="JARVIS, help me review household jobs, maintenance and practical improvements.">Household</button>
+</div>
+<p class="small" id="prompt" aria-live="polite">Choose a command to prepare an instruction. Then copy it into your JARVIS conversation.</p>
+<button id="copy">Copy selected instruction</button>
+</section>
+<footer>J.A.R.V.I.S. · PERSONAL ASSISTANT INTERFACE</footer>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+function update(){const d=new Date();$('clock').textContent=d.toLocaleTimeString('en-GB');$('date').textContent=d.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'});$('greeting').textContent=d.getHours()<12?'MORNING':d.getHours()<18?'AFTERNOON':'EVENING'}
+update();setInterval(update,1000);
+let selected='';
+document.querySelectorAll('[data-prompt]').forEach(b=>b.addEventListener('click',()=>{selected=b.dataset.prompt;$('prompt').textContent=selected}));
+$('copy').addEventListener('click',async()=>{if(!selected){$('prompt').textContent='Choose a command first.';return}try{await navigator.clipboard.writeText(selected);$('copy').textContent='Copied';}catch(e){$('prompt').textContent=selected+' (Select and copy this text.)'}});
+</script>
+</body></html>
