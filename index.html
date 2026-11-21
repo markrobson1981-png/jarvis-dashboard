@@ -2,48 +2,344 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta charset="UTF-8">
-<title>JARVIS</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#020814">
+<title>J.A.R.V.I.S.</title>
+
 <style>
-*{box-sizing:border-box}
-body{margin:0;background:#050d1b;color:#b9eaff;font-family:Arial,sans-serif;text-align:center;padding:25px 18px}
-h1{font-size:34px;letter-spacing:9px;color:#62d9ff;margin-top:35px}
-.sub{letter-spacing:4px;color:#568ba9;font-size:11px}
-.circle{width:190px;height:190px;border:2px solid #38caff;border-radius:50%;margin:45px auto 25px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 18px #168acb,inset 0 0 25px #12608a}
-.core{width:125px;height:125px;border:1px solid #7be5ff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;letter-spacing:3px;box-shadow:0 0 22px #168acb}
-button{width:100%;max-width:340px;padding:17px;margin:9px auto;border:1px solid #38bde9;border-radius:8px;background:#0b2035;color:#a9eaff;font-size:15px;letter-spacing:1px}
-button.primary{background:#0876a5;color:white;font-weight:bold}
-.status{margin:28px auto;color:#67d8ad;font-size:12px;letter-spacing:2px}
-#clock{font-size:26px;margin:12px}
-footer{color:#45677e;font-size:10px;margin-top:40px;letter-spacing:2px}
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(ellipse at center, #092344 0%, #030d1d 48%, #01040a 100%);
+  color: #bceeff;
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-x: hidden;
+}
+
+header {
+  width: 100%;
+  padding: 30px 15px 5px;
+  text-align: center;
+  letter-spacing: 7px;
+}
+
+header h1 {
+  font-size: 27px;
+  font-weight: 300;
+  margin: 0;
+  color: #c8f5ff;
+  text-shadow: 0 0 18px #00bfff;
+}
+
+.subtitle {
+  margin-top: 9px;
+  font-size: 10px;
+  letter-spacing: 4px;
+  color: #398dbb;
+}
+
+.reactor {
+  width: min(88vw, 390px);
+  aspect-ratio: 1;
+  position: relative;
+  margin: 35px auto 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 195, 255, 0.65);
+  box-shadow: 0 0 15px rgba(0, 174, 255, 0.2),
+              inset 0 0 15px rgba(0, 174, 255, 0.1);
+  transition: transform 0.12s ease, border-color 0.12s ease;
+}
+
+.ring1 {
+  width: 100%;
+  height: 100%;
+  border-width: 2px;
+  border-style: dashed;
+  animation: rotate 30s linear infinite;
+}
+
+.ring2 {
+  width: 85%;
+  height: 85%;
+  border-width: 2px;
+  border-color: #168bd0;
+  animation: rotateBack 22s linear infinite;
+}
+
+.ring3 {
+  width: 68%;
+  height: 68%;
+  border: 3px dotted #20cfff;
+  animation: rotate 14s linear infinite;
+}
+
+.ring4 {
+  width: 51%;
+  height: 51%;
+  border: 2px solid #36dfff;
+  box-shadow: 0 0 35px #008cff,
+              inset 0 0 30px rgba(0, 145, 255, 0.4);
+}
+
+.core {
+  width: 35%;
+  height: 35%;
+  border-radius: 50%;
+  background: radial-gradient(circle, #e8ffff 0%, #49dfff 12%, #0079bd 38%, #03152b 75%);
+  box-shadow: 0 0 25px #00bfff,
+              0 0 65px #007bff,
+              0 0 110px rgba(0, 150, 255, 0.6);
+  animation: corePulse 3s ease-in-out infinite;
+  z-index: 2;
+}
+
+.reactor.active .core {
+  animation: corePulse 0.55s ease-in-out infinite;
+}
+
+.reactor.active .ring {
+  border-color: #8af4ff;
+  box-shadow: 0 0 25px #00cfff,
+              inset 0 0 20px rgba(0, 200, 255, 0.35);
+}
+
+@keyframes rotate {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes rotateBack {
+  to { transform: rotate(-360deg); }
+}
+
+@keyframes corePulse {
+  0%, 100% { transform: scale(0.94); filter: brightness(0.9); }
+  50% { transform: scale(1.08); filter: brightness(1.4); }
+}
+
+.status {
+  text-align: center;
+  min-height: 42px;
+  margin: 5px 0 18px;
+  color: #69dfff;
+  font-size: 12px;
+  letter-spacing: 3px;
+  text-shadow: 0 0 12px #00aaff;
+}
+
+.controls {
+  width: min(88%, 360px);
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+}
+
+button {
+  padding: 16px;
+  border: 1px solid #168fc5;
+  border-radius: 5px;
+  background: rgba(0, 85, 140, 0.18);
+  color: #bceeff;
+  font-size: 12px;
+  letter-spacing: 3px;
+  cursor: pointer;
+  box-shadow: 0 0 15px rgba(0, 150, 255, 0.12);
+}
+
+button:active {
+  background: rgba(0, 160, 255, 0.4);
+}
+
+button.primary {
+  border-color: #42dfff;
+  background: linear-gradient(90deg, #064b78, #087cb2, #064b78);
+  box-shadow: 0 0 22px rgba(0, 190, 255, 0.3);
+}
+
+.info {
+  margin: 25px 10px 35px;
+  text-align: center;
+  font-size: 10px;
+  line-height: 2;
+  letter-spacing: 2px;
+  color: #397da2;
+}
+
+footer {
+  margin-top: auto;
+  padding: 15px;
+  font-size: 9px;
+  letter-spacing: 3px;
+  color: #245574;
+}
 </style>
 </head>
+
 <body>
-<h1>J.A.R.V.I.S.</h1>
-<div class="sub">JUST A RATHER VERY INTELLIGENT SYSTEM</div>
-<div class="circle"><div class="core">ONLINE</div></div>
-<div id="clock">--:--:--</div>
-<div id="date"></div>
-<div class="status">● SYSTEM READY</div>
-<button class="primary" onclick="location.href='shortcuts://run-shortcut?name=JARVIS'">ACTIVATE JARVIS</button>
-<button onclick="ask('Give me a concise briefing of today’s priorities and important things I should know.')">DAILY BRIEFING</button>
-<button onclick="ask('Help me organise my tasks and plan my day.')">PLAN MY DAY</button>
-<button onclick="ask('Act as my personal assistant. What can you help me with?')">ASSISTANT MODE</button>
-<footer>JARVIS INTERFACE · PERSONAL ASSISTANT</footer>
+
+<header>
+  <h1>J.A.R.V.I.S.</h1>
+  <div class="subtitle">JUST A RATHER VERY INTELLIGENT SYSTEM</div>
+</header>
+
+<div class="reactor" id="reactor">
+  <div class="ring ring1"></div>
+  <div class="ring ring2"></div>
+  <div class="ring ring3"></div>
+  <div class="ring ring4"></div>
+  <div class="core"></div>
+</div>
+
+<div class="status" id="status">SYSTEM STANDBY</div>
+
+<div class="controls">
+  <button class="primary" onclick="activateJarvis()">
+    ACTIVATE JARVIS
+  </button>
+
+  <button onclick="toggleMicrophone()">
+    ENABLE AUDIO REACTOR
+  </button>
+
+  <button onclick="demoSpeaking()">
+    TEST REACTOR ANIMATION
+  </button>
+</div>
+
+<div class="info">
+  PERSONAL AI INTERFACE<br>
+  AUDIO REACTIVE VISUALISATION<br>
+  SYSTEM ONLINE
+</div>
+
+<footer>
+  STARK INDUSTRIES // J.A.R.V.I.S. INTERFACE
+</footer>
+
 <script>
-function update(){
-const d=new Date();
-document.getElementById('clock').textContent=d.toLocaleTimeString('en-GB');
-document.getElementById('date').textContent=d.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+const reactor = document.getElementById("reactor");
+const statusText = document.getElementById("status");
+
+let audioContext;
+let analyser;
+let microphone;
+let animationFrame;
+let demoTimer;
+
+function activateJarvis() {
+  window.location.href =
+    "shortcuts://run-shortcut?name=JARVIS";
 }
-function ask(message){
-if(navigator.clipboard){
-navigator.clipboard.writeText(message).then(()=>alert('Command copied. Open JARVIS and paste it into the conversation.')).catch(()=>alert(message));
-}else{alert(message);}
+
+async function toggleMicrophone() {
+  if (microphone) {
+    microphone.getTracks().forEach(track => track.stop());
+    microphone = null;
+    cancelAnimationFrame(animationFrame);
+    reactor.classList.remove("active");
+    statusText.textContent = "SYSTEM STANDBY";
+    return;
+  }
+
+  try {
+    microphone = await navigator.mediaDevices.getUserMedia({
+      audio: true
+    });
+
+    audioContext = new (
+      window.AudioContext || window.webkitAudioContext
+    )();
+
+    analyser = audioContext.createAnalyser();
+    analyser.fftSize = 256;
+
+    const source = audioContext.createMediaStreamSource(microphone);
+    source.connect(analyser);
+
+    const data = new Uint8Array(analyser.frequencyBinCount);
+
+    statusText.textContent = "AUDIO REACTOR ACTIVE";
+    animateAudio(data);
+
+  } catch (error) {
+    statusText.textContent = "MICROPHONE ACCESS REQUIRED";
+  }
 }
-update();setInterval(update,1000);
+
+function animateAudio(data) {
+  analyser.getByteFrequencyData(data);
+
+  const average =
+    data.reduce((sum, value) => sum + value, 0) / data.length;
+
+  const intensity = average / 128;
+
+  reactor.classList.toggle("active", intensity > 0.08);
+
+  const rings = document.querySelectorAll(".ring");
+
+  rings.forEach((ring, index) => {
+    const scale = 1 + intensity * (0.04 + index * 0.025);
+    ring.style.transform =
+      `scale(${scale}) rotate(${index * 12}deg)`;
+  });
+
+  animationFrame = requestAnimationFrame(() =>
+    animateAudio(data)
+  );
+}
+
+function demoSpeaking() {
+  clearTimeout(demoTimer);
+
+  reactor.classList.add("active");
+  statusText.textContent = "JARVIS SPEAKING";
+
+  let count = 0;
+
+  function pulse() {
+    if (count >= 12) {
+      reactor.classList.remove("active");
+      statusText.textContent = "SYSTEM STANDBY";
+
+      document.querySelectorAll(".ring").forEach(ring => {
+        ring.style.transform = "";
+      });
+
+      return;
+    }
+
+    const rings = document.querySelectorAll(".ring");
+
+    rings.forEach((ring, index) => {
+      const scale = 1 + Math.random() * 0.12;
+      ring.style.transform = `scale(${scale})`;
+    });
+
+    count++;
+    demoTimer = setTimeout(pulse, 180);
+  }
+
+  pulse();
+}
 </script>
+
 </body>
 </html>
+
 
