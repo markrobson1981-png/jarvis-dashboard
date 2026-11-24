@@ -3,189 +3,265 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <meta name="theme-color" content="#020814">
-<title>J.A.R.V.I.S.</title>
+<title>J.A.R.V.I.S. | Stark Interface</title>
 
 <style>
 * {
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
   margin: 0;
   min-height: 100vh;
+  min-height: 100dvh;
+  overflow: hidden;
   background:
-    radial-gradient(ellipse at center, #092344 0%, #030d1d 48%, #01040a 100%);
-  color: #bceeff;
+    radial-gradient(ellipse at 50% 43%, #092b4a 0%, #041426 38%, #01050d 78%);
+  color: #c8f5ff;
   font-family: Arial, sans-serif;
   display: flex;
   flex-direction: column;
   align-items: center;
-  overflow-x: hidden;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: .23;
+  background-image:
+    linear-gradient(rgba(0,180,255,.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,180,255,.08) 1px, transparent 1px);
+  background-size: 34px 34px;
+  mask-image: radial-gradient(ellipse, black, transparent 75%);
 }
 
 header {
   width: 100%;
-  padding: 30px 15px 5px;
   text-align: center;
-  letter-spacing: 7px;
+  padding: 35px 12px 0;
+  z-index: 2;
 }
 
-header h1 {
-  font-size: 27px;
-  font-weight: 300;
+h1 {
   margin: 0;
-  color: #c8f5ff;
+  font-size: 29px;
+  font-weight: 300;
+  letter-spacing: 8px;
+  color: #d8faff;
   text-shadow: 0 0 18px #00bfff;
 }
 
 .subtitle {
-  margin-top: 9px;
-  font-size: 10px;
-  letter-spacing: 4px;
-  color: #398dbb;
+  margin-top: 10px;
+  font-size: 9px;
+  letter-spacing: 3px;
+  color: #4b9fc6;
+}
+
+.systemline {
+  margin-top: 19px;
+  font-size: 9px;
+  letter-spacing: 3px;
+  color: #43cfff;
 }
 
 .reactor {
+  position: relative;
   width: min(88vw, 390px);
   aspect-ratio: 1;
-  position: relative;
-  margin: 35px auto 20px;
+  margin: auto;
   display: flex;
   align-items: center;
   justify-content: center;
+  filter: drop-shadow(0 0 18px rgba(0,155,255,.16));
+}
+
+canvas {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
 }
 
 .ring {
   position: absolute;
   border-radius: 50%;
-  border: 1px solid rgba(0, 195, 255, 0.65);
-  box-shadow: 0 0 15px rgba(0, 174, 255, 0.2),
-              inset 0 0 15px rgba(0, 174, 255, 0.1);
-  transition: transform 0.12s ease, border-color 0.12s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.ring1 {
+.ring-one {
   width: 100%;
   height: 100%;
-  border-width: 2px;
-  border-style: dashed;
-  animation: rotate 30s linear infinite;
+  border: 1px dashed rgba(36,190,255,.7);
+  box-shadow: 0 0 18px rgba(0,160,255,.15);
+  animation: rotate 38s linear infinite;
 }
 
-.ring2 {
-  width: 85%;
-  height: 85%;
-  border-width: 2px;
-  border-color: #168bd0;
-  animation: rotateBack 22s linear infinite;
+.ring-one::before,
+.ring-one::after {
+  content: "";
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #7ceaff;
+  box-shadow: 0 0 14px #00bfff;
 }
 
-.ring3 {
-  width: 68%;
-  height: 68%;
-  border: 3px dotted #20cfff;
-  animation: rotate 14s linear infinite;
+.ring-one::before { top: 8%; left: 23%; }
+.ring-one::after { bottom: 8%; right: 23%; }
+
+.ring-two {
+  width: 87%;
+  height: 87%;
+  border: 2px solid rgba(0,144,225,.55);
+  border-left-color: transparent;
+  border-right-color: #42dfff;
+  animation: rotate-back 23s linear infinite;
 }
 
-.ring4 {
-  width: 51%;
-  height: 51%;
-  border: 2px solid #36dfff;
-  box-shadow: 0 0 35px #008cff,
-              inset 0 0 30px rgba(0, 145, 255, 0.4);
+.ring-three {
+  width: 73%;
+  height: 73%;
+  border: 1px dotted #4bcfff;
+  animation: rotate 17s linear infinite;
+}
+
+.ring-four {
+  width: 61%;
+  height: 61%;
+  border: 5px double rgba(22,166,235,.65);
+  box-shadow: inset 0 0 20px rgba(0,150,255,.15),
+              0 0 20px rgba(0,150,255,.2);
+  animation: breathe 4s ease-in-out infinite;
+}
+
+.ring-five {
+  width: 46%;
+  height: 46%;
+  border: 2px solid rgba(79,220,255,.8);
+  box-shadow: 0 0 25px #007fc5,
+              inset 0 0 25px rgba(0,170,255,.35);
 }
 
 .core {
-  width: 35%;
-  height: 35%;
+  width: 31%;
+  height: 31%;
   border-radius: 50%;
-  background: radial-gradient(circle, #e8ffff 0%, #49dfff 12%, #0079bd 38%, #03152b 75%);
-  box-shadow: 0 0 25px #00bfff,
-              0 0 65px #007bff,
-              0 0 110px rgba(0, 150, 255, 0.6);
-  animation: corePulse 3s ease-in-out infinite;
+  background: radial-gradient(circle,
+    #ffffff 0%,
+    #9bf3ff 9%,
+    #21cfff 25%,
+    #087fc0 48%,
+    #031a32 75%);
+  box-shadow:
+    0 0 18px #c8faff,
+    0 0 40px #00bfff,
+    0 0 85px rgba(0,128,255,.8),
+    inset 0 0 20px #8aefff;
+  animation: core-pulse 3s ease-in-out infinite;
   z-index: 2;
 }
 
-.reactor.active .core {
-  animation: corePulse 0.55s ease-in-out infinite;
+.reactor.listening .core {
+  animation: core-pulse .8s ease-in-out infinite;
 }
 
-.reactor.active .ring {
-  border-color: #8af4ff;
-  box-shadow: 0 0 25px #00cfff,
-              inset 0 0 20px rgba(0, 200, 255, 0.35);
+.reactor.listening .ring-four {
+  animation-duration: 1.8s;
+}
+
+.reactor.active .core {
+  animation: core-pulse .45s ease-in-out infinite;
 }
 
 @keyframes rotate {
   to { transform: rotate(360deg); }
 }
 
-@keyframes rotateBack {
+@keyframes rotate-back {
   to { transform: rotate(-360deg); }
 }
 
-@keyframes corePulse {
-  0%, 100% { transform: scale(0.94); filter: brightness(0.9); }
+@keyframes breathe {
+  0%,100% { transform: scale(.98); opacity: .7; }
+  50% { transform: scale(1.04); opacity: 1; }
+}
+
+@keyframes core-pulse {
+  0%,100% { transform: scale(.94); filter: brightness(.9); }
   50% { transform: scale(1.08); filter: brightness(1.4); }
 }
 
-.status {
+.details {
+  width: 100%;
   text-align: center;
-  min-height: 42px;
-  margin: 5px 0 18px;
-  color: #69dfff;
+  z-index: 2;
+  margin-bottom: 12px;
+}
+
+.state {
   font-size: 12px;
-  letter-spacing: 3px;
+  letter-spacing: 4px;
+  color: #65dcff;
   text-shadow: 0 0 12px #00aaff;
 }
 
+.description {
+  margin-top: 9px;
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: #477e9d;
+}
+
 .controls {
-  width: min(88%, 360px);
-  display: flex;
-  flex-direction: column;
-  gap: 13px;
+  width: min(86%, 350px);
+  padding-bottom: 25px;
+  z-index: 2;
 }
 
 button {
-  padding: 16px;
-  border: 1px solid #168fc5;
-  border-radius: 5px;
-  background: rgba(0, 85, 140, 0.18);
-  color: #bceeff;
+  width: 100%;
+  padding: 18px 12px;
+  border: 1px solid #43dfff;
+  border-radius: 4px;
+  color: #d8faff;
+  background: linear-gradient(90deg,
+    rgba(0,70,120,.8),
+    rgba(0,135,195,.75),
+    rgba(0,70,120,.8));
   font-size: 12px;
-  letter-spacing: 3px;
-  cursor: pointer;
-  box-shadow: 0 0 15px rgba(0, 150, 255, 0.12);
+  letter-spacing: 4px;
+  box-shadow: 0 0 22px rgba(0,174,255,.28),
+              inset 0 0 15px rgba(0,174,255,.15);
 }
 
 button:active {
-  background: rgba(0, 160, 255, 0.4);
-}
-
-button.primary {
-  border-color: #42dfff;
-  background: linear-gradient(90deg, #064b78, #087cb2, #064b78);
-  box-shadow: 0 0 22px rgba(0, 190, 255, 0.3);
-}
-
-.info {
-  margin: 25px 10px 35px;
-  text-align: center;
-  font-size: 10px;
-  line-height: 2;
-  letter-spacing: 2px;
-  color: #397da2;
+  background: #087eb5;
+  transform: scale(.99);
 }
 
 footer {
-  margin-top: auto;
-  padding: 15px;
-  font-size: 9px;
+  padding: 0 10px 18px;
+  font-size: 8px;
   letter-spacing: 3px;
-  color: #245574;
+  color: #285879;
+  z-index: 2;
+}
+
+@media (max-height: 700px) {
+  header { padding-top: 20px; }
+  .reactor { width: min(74vw, 310px); }
+  .controls { padding-bottom: 15px; }
 }
 </style>
 </head>
@@ -194,71 +270,139 @@ footer {
 
 <header>
   <h1>J.A.R.V.I.S.</h1>
-  <div class="subtitle">JUST A RATHER VERY INTELLIGENT SYSTEM</div>
+  <div class="subtitle">
+    JUST A RATHER VERY INTELLIGENT SYSTEM
+  </div>
+  <div class="systemline" id="systemline">
+    INITIALISING SYSTEM
+  </div>
 </header>
 
 <div class="reactor" id="reactor">
-  <div class="ring ring1"></div>
-  <div class="ring ring2"></div>
-  <div class="ring ring3"></div>
-  <div class="ring ring4"></div>
+  <div class="ring ring-one"></div>
+  <div class="ring ring-two"></div>
+  <div class="ring ring-three"></div>
+  <div class="ring ring-four"></div>
+  <div class="ring ring-five"></div>
   <div class="core"></div>
+  <canvas id="energy"></canvas>
 </div>
 
-<div class="status" id="status">SYSTEM STANDBY</div>
+<div class="details">
+  <div class="state" id="state">INITIALISING</div>
+  <div class="description" id="description">
+    ESTABLISHING SYSTEM CONNECTION
+  </div>
+</div>
 
 <div class="controls">
-  <button class="primary" onclick="activateJarvis()">
+  <button id="activate" onclick="activateJarvis()">
     ACTIVATE JARVIS
   </button>
-
-  <button onclick="toggleMicrophone()">
-    ENABLE AUDIO REACTOR
-  </button>
-
-  <button onclick="demoSpeaking()">
-    TEST REACTOR ANIMATION
-  </button>
-</div>
-
-<div class="info">
-  PERSONAL AI INTERFACE<br>
-  AUDIO REACTIVE VISUALISATION<br>
-  SYSTEM ONLINE
 </div>
 
 <footer>
-  STARK INDUSTRIES // J.A.R.V.I.S. INTERFACE
+  STARK INDUSTRIES // PERSONAL AI INTERFACE
 </footer>
 
 <script>
 const reactor = document.getElementById("reactor");
-const statusText = document.getElementById("status");
+const stateText = document.getElementById("state");
+const description = document.getElementById("description");
+const systemline = document.getElementById("systemline");
+const canvas = document.getElementById("energy");
+const ctx = canvas.getContext("2d");
 
-let audioContext;
-let analyser;
-let microphone;
-let animationFrame;
-let demoTimer;
+let audioContext = null;
+let analyser = null;
+let microphone = null;
+let animationFrame = null;
+let audioReady = false;
+let level = 0;
 
-function activateJarvis() {
-  window.location.href =
-    "shortcuts://run-shortcut?name=JARVIS";
+function setState(state, detail, top) {
+  stateText.textContent = state;
+  description.textContent = detail;
+  systemline.textContent = top;
 }
 
-async function toggleMicrophone() {
-  if (microphone) {
-    microphone.getTracks().forEach(track => track.stop());
-    microphone = null;
-    cancelAnimationFrame(animationFrame);
-    reactor.classList.remove("active");
-    statusText.textContent = "SYSTEM STANDBY";
+function resizeCanvas() {
+  const size = canvas.clientWidth;
+  const ratio = window.devicePixelRatio || 1;
+  canvas.width = size * ratio;
+  canvas.height = size * ratio;
+  ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+}
+
+window.addEventListener("resize", resizeCanvas);
+resizeCanvas();
+
+function drawEnergy() {
+  const w = canvas.clientWidth;
+  const h = canvas.clientHeight;
+  const cx = w / 2;
+  const cy = h / 2;
+  const base = w * .37;
+
+  ctx.clearRect(0, 0, w, h);
+
+  const time = performance.now() / 1000;
+
+  for (let layer = 0; layer < 3; layer++) {
+    ctx.beginPath();
+
+    const points = 180;
+    const rotation = time * (layer % 2 ? -.12 : .08);
+
+    for (let i = 0; i <= points; i++) {
+      const angle = (i / points) * Math.PI * 2;
+      const wave = Math.sin(angle * 9 + time * 2 + layer) *
+                   (2 + level * 10);
+      const wave2 = Math.cos(angle * 15 - time * 3) *
+                    (1 + level * 6);
+      const radius = base + layer * 8 + wave + wave2;
+
+      const x = cx + Math.cos(angle + rotation) * radius;
+      const y = cy + Math.sin(angle + rotation) * radius;
+
+      if (i === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    }
+
+    ctx.closePath();
+    ctx.strokeStyle = layer === 1
+      ? "rgba(0,210,255,.65)"
+      : "rgba(45,150,255,.35)";
+    ctx.lineWidth = layer === 1 ? 1.5 : 1;
+    ctx.shadowBlur = 12;
+    ctx.shadowColor = "#00aaff";
+    ctx.stroke();
+  }
+
+  ctx.shadowBlur = 0;
+  animationFrame = requestAnimationFrame(drawEnergy);
+}
+
+drawEnergy();
+
+async function startMicrophone() {
+  if (!navigator.mediaDevices ||
+      !navigator.mediaDevices.getUserMedia) {
+    setState(
+      "MICROPHONE UNAVAILABLE",
+      "OPEN THIS DASHBOARD IN SAFARI",
+      "SYSTEM PARTIALLY ONLINE"
+    );
     return;
   }
 
   try {
     microphone = await navigator.mediaDevices.getUserMedia({
-      audio: true
+      audio: {
+        echoCancellation: false,
+        noiseSuppression: false,
+        autoGainControl: false
+      }
     });
 
     audioContext = new (
@@ -266,80 +410,89 @@ async function toggleMicrophone() {
     )();
 
     analyser = audioContext.createAnalyser();
-    analyser.fftSize = 256;
+    analyser.fftSize = 512;
+    analyser.smoothingTimeConstant = .78;
 
     const source = audioContext.createMediaStreamSource(microphone);
     source.connect(analyser);
 
-    const data = new Uint8Array(analyser.frequencyBinCount);
+    audioReady = true;
 
-    statusText.textContent = "AUDIO REACTOR ACTIVE";
-    animateAudio(data);
+    setState(
+      "SYSTEM LISTENING",
+      "AUDIO REACTOR ONLINE",
+      "ALL SYSTEMS OPERATIONAL"
+    );
+
+    reactor.classList.add("listening");
+    monitorAudio();
 
   } catch (error) {
-    statusText.textContent = "MICROPHONE ACCESS REQUIRED";
+    setState(
+      "MICROPHONE ACCESS REQUIRED",
+      "ALLOW MICROPHONE ACCESS IN IPHONE SETTINGS",
+      "SYSTEM PARTIALLY ONLINE"
+    );
   }
 }
 
-function animateAudio(data) {
-  analyser.getByteFrequencyData(data);
+function monitorAudio() {
+  if (!analyser) return;
 
-  const average =
-    data.reduce((sum, value) => sum + value, 0) / data.length;
+  const values = new Uint8Array(analyser.frequencyBinCount);
 
-  const intensity = average / 128;
+  function update() {
+    analyser.getByteFrequencyData(values);
 
-  reactor.classList.toggle("active", intensity > 0.08);
-
-  const rings = document.querySelectorAll(".ring");
-
-  rings.forEach((ring, index) => {
-    const scale = 1 + intensity * (0.04 + index * 0.025);
-    ring.style.transform =
-      `scale(${scale}) rotate(${index * 12}deg)`;
-  });
-
-  animationFrame = requestAnimationFrame(() =>
-    animateAudio(data)
-  );
-}
-
-function demoSpeaking() {
-  clearTimeout(demoTimer);
-
-  reactor.classList.add("active");
-  statusText.textContent = "JARVIS SPEAKING";
-
-  let count = 0;
-
-  function pulse() {
-    if (count >= 12) {
-      reactor.classList.remove("active");
-      statusText.textContent = "SYSTEM STANDBY";
-
-      document.querySelectorAll(".ring").forEach(ring => {
-        ring.style.transform = "";
-      });
-
-      return;
+    let total = 0;
+    for (let i = 0; i < values.length; i++) {
+      total += values[i];
     }
 
-    const rings = document.querySelectorAll(".ring");
+    const average = total / values.length;
+    const target = Math.min(1, average / 65);
 
-    rings.forEach((ring, index) => {
-      const scale = 1 + Math.random() * 0.12;
-      ring.style.transform = `scale(${scale})`;
-    });
+    level += (target - level) * .18;
 
-    count++;
-    demoTimer = setTimeout(pulse, 180);
+    if (level > .12) {
+      reactor.classList.add("active");
+    } else {
+      reactor.classList.remove("active");
+    }
+
+    requestAnimationFrame(update);
   }
 
-  pulse();
+  update();
 }
+
+function activateJarvis() {
+  if (audioContext && audioContext.state === "suspended") {
+    audioContext.resume();
+  }
+
+  setState(
+    "CONNECTING",
+    "OPENING JARVIS VOICE INTERFACE",
+    "SYSTEM ACTIVE"
+  );
+
+  setTimeout(() => {
+    window.location.href =
+      "shortcuts://run-shortcut?name=JARVIS";
+  }, 250);
+}
+
+document.addEventListener("pointerdown", () => {
+  if (audioContext && audioContext.state === "suspended") {
+    audioContext.resume();
+  }
+}, { once: true });
+
+window.addEventListener("load", () => {
+  startMicrophone();
+});
 </script>
 
 </body>
 </html>
-
-
